@@ -1,0 +1,147 @@
+]<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Controle de Turno</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Controle de Turno</h1>
+        <form id="formulario">
+            <label for="estacao">Estação:</label>
+            <select id="estacao" name="estacao" required>
+                <option value="São Miguel Paulista">São Miguel Paulista</option>
+                <option value="Itaim Paulista">Itaim Paulista</option>
+                <option value="Jardim Helena">Jardim Helena</option>
+            </select>
+
+            <label for="hora">Hora:</label>
+            <select id="hora" name="hora" required>
+                <option value="21:40 às 00:40">21:40 às 00:40</option>
+                <option value="04:00 às 06:00">04:00 às 06:00</option>
+            </select>
+
+            <label for="data">Data:</label>
+            <input type="date" id="data" name="data" required>
+
+            <label for="estoqueF01">Total F01 em Estoque:</label>
+            <input type="number" id="estoqueF01" name="estoqueF01" required>
+
+            <label for="estoqueF36">Total F36 em Estoque:</label>
+            <input type="number" id="estoqueF36" name="estoqueF36" required>
+
+            <label for="estoqueF37">Total F37 em Estoque:</label>
+            <input type="number" id="estoqueF37" name="estoqueF37" required>
+
+            <label for="vendasQRC">Quantidade de vendas de QRC:</label>
+            <input type="number" id="vendasQRC" name="vendasQRC" required>
+
+            <label for="valorQRC">Valor de Vendas QRC:</label>
+            <input type="number" id="valorQRC" name="valorQRC" step="0.01" required>
+
+            <label for="valorF01">Valor de Vendas F01:</label>
+            <input type="number" id="valorF01" name="valorF01" step="0.01" required>
+
+            <label for="valorF36">Valor de Vendas F36:</label>
+            <input type="number" id="valorF36" name="valorF36" step="0.01" required>
+
+            <label for="troca">Total de Troca:</label>
+            <input type="number" id="troca" name="troca" required>
+
+            <label for="bilheteria">Bilheteria (fundo de caixa):</label>
+            <input type="number" id="bilheteria" name="bilheteria" step="0.01" required>
+
+            <label for="temporizado">Temporizado:</label>
+            <input type="number" id="temporizado" name="temporizado" step="0.01" required>
+
+            <label for="auxiliar">Auxiliar:</label>
+            <input type="number" id="auxiliar" name="auxiliar" step="0.01" required>
+
+            <label for="rendaTotal">Renda Total da Estação:</label>
+            <input type="number" id="rendaTotal" name="rendaTotal" step="0.01" required>
+
+            <label for="sobra">Sobra:</label>
+            <input type="number" id="sobra" name="sobra" step="0.01" required>
+
+            <label for="supervisao">Supervisão:</label>
+            <input type="text" id="supervisao" name="supervisao" required>
+
+            <label for="re">RE:</label>
+            <input type="number" id="re" name="re" required>
+
+            <label for="foto">Foto:</label>
+            <input type="file" id="foto" name="foto" accept="image/*" required>
+
+            <button type="submit">Enviar</button>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('formulario').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const estacao = document.getElementById('estacao').value;
+            const hora = document.getElementById('hora').value;
+            const data = document.getElementById('data').value;
+            const estoqueF01 = document.getElementById('estoqueF01').value;
+            const estoqueF36 = document.getElementById('estoqueF36').value;
+            const estoqueF37 = document.getElementById('estoqueF37').value;
+            const vendasQRC = document.getElementById('vendasQRC').value;
+            const valorQRC = document.getElementById('valorQRC').value;
+            const valorF01 = document.getElementById('valorF01').value;
+            const valorF36 = document.getElementById('valorF36').value;
+            const troca = document.getElementById('troca').value;
+            const bilheteria = document.getElementById('bilheteria').value;
+            const temporizado = document.getElementById('temporizado').value;
+            const auxiliar = document.getElementById('auxiliar').value;
+            const rendaTotal = document.getElementById('rendaTotal').value;
+            const sobra = document.getElementById('sobra').value;
+            const supervisao = document.getElementById('supervisao').value;
+            const re = document.getElementById('re').value;
+            const foto = document.getElementById('foto').files[0];
+
+            const mensagem = `
+Estação: ${estacao}
+Hora: ${hora}
+Data: ${data}
+
+Total F01 em Estoque: ${estoqueF01}
+Total F36 em Estoque: ${estoqueF36}
+Total F37 em Estoque: ${estoqueF37}
+
+Quantidade de vendas de QRC: ${vendasQRC}
+Valor de Vendas QRC: R$${valorQRC}
+
+Valor de Vendas F01: R$${valorF01}
+Valor de Vendas F36: R$${valorF36}
+Total de troca: ${troca}
+
+Bilheteria (fundo de caixa): R$${bilheteria}
+Temporizado: R$${temporizado}
+Auxiliar: R$${auxiliar}
+Renda total da estação: R$${rendaTotal}
+
+Sobra: R$${sobra}
+Sem quebras
+Forms feito ✔️
+
+Supervisão: ${supervisao}
+RE: ${re}
+            `;
+
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const base64String = reader.result.replace('data:', '').replace(/^.+,/, '');
+                
+                const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(mensagem)}`;
+
+                window.open(whatsappUrl, '_blank');
+            };
+
+            reader.readAsDataURL(foto);
+        });
+    </script>
+</body>
+</html>
